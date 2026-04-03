@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Shield, Languages, Menu, X, Wifi, CreditCard, HelpCircle, MessageCircle } from "lucide-react";
+import { Shield, Menu, X, Wifi, CreditCard, HelpCircle, MessageCircle } from "lucide-react";
 import { I18nProvider, useI18n } from "@/lib/i18n";
 import { ReactNode, useState, useEffect } from "react";
 
 function Nav() {
-  const { lang, setLang, t } = useI18n();
+  const { t } = useI18n();
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
 
@@ -45,24 +45,10 @@ function Nav() {
               {link.label}
             </Link>
           ))}
-          <button
-            onClick={() => setLang(lang === "en" ? "mm" : "en")}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-card border border-card-border rounded-lg hover:bg-card-border transition-colors"
-          >
-            <Languages className="w-3.5 h-3.5" />
-            {lang === "en" ? "မြန်မာ" : "English"}
-          </button>
         </div>
 
-        {/* Mobile: language + hamburger */}
+        {/* Mobile: hamburger */}
         <div className="flex md:hidden items-center gap-2">
-          <button
-            onClick={() => setLang(lang === "en" ? "mm" : "en")}
-            className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium bg-card border border-card-border rounded-lg"
-          >
-            <Languages className="w-3.5 h-3.5" />
-            {lang === "en" ? "MM" : "EN"}
-          </button>
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="p-2 rounded-lg hover:bg-card-border transition-colors"
