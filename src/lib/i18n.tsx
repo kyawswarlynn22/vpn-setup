@@ -144,7 +144,7 @@ const translations = {
     server: "ဆာဗာ",
     expires: "သက်တမ်းကုန်ဆုံးမည်ရက်",
     expired: "သက်တမ်းကုန်သွားပြီ",
-    daysLeft: "ကျန်ရှိနေသောရက်",
+    daysLeft: "ရက်ကျန်",
     created: "စတင်အသုံးပြုသည့်ရက်",
 
     // Contact page
