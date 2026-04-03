@@ -74,24 +74,26 @@ export default function StatusPage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-12">
-      <div className="text-center mb-10">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 mb-4">
-          <Wifi className="w-8 h-8 text-primary" />
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <div className="text-center mb-8 sm:mb-10">
+        <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-primary/10 mb-3 sm:mb-4">
+          <Wifi className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />
         </div>
-        <h1 className="text-3xl font-bold mb-2">{t("statusTitle")}</h1>
-        <p className="text-muted">{t("statusSubtitle")}</p>
+        <h1 className="text-2xl sm:text-3xl font-bold mb-2">{t("statusTitle")}</h1>
+        <p className="text-sm sm:text-base text-muted">{t("statusSubtitle")}</p>
       </div>
 
-      <form onSubmit={handleSearch} className="mb-8">
-        <div className="relative">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" />
-          <input type="text" value={query} onChange={(e) => setQuery(e.target.value)}
-            placeholder={t("searchPlaceholder")}
-            className="w-full pl-12 pr-4 py-3.5 bg-card border border-card-border rounded-xl text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all" />
+      <form onSubmit={handleSearch} className="mb-6 sm:mb-8">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 sm:relative">
+          <div className="relative flex-1">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" />
+            <input type="text" value={query} onChange={(e) => setQuery(e.target.value)}
+              placeholder={t("searchPlaceholder")}
+              className="w-full pl-12 pr-4 py-3.5 bg-card border border-card-border rounded-xl sm:rounded-r-none text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all" />
+          </div>
           <button type="submit" disabled={loading || !query.trim()}
-            className="absolute right-2 top-1/2 -translate-y-1/2 px-5 py-2 bg-primary hover:bg-primary-hover text-white text-sm font-medium rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
-            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : t("search")}
+            className="w-full sm:w-auto px-6 py-3.5 bg-primary hover:bg-primary-hover text-white text-sm font-medium rounded-xl sm:rounded-l-none disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2">
+            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Search className="w-4 h-4" /> {t("search")}</>}
           </button>
         </div>
       </form>
@@ -106,54 +108,54 @@ export default function StatusPage() {
       {keys.length > 0 && (
         <div className="space-y-4">
           {keys.map((key) => (
-            <div key={key.keyId} className="bg-card border border-card-border rounded-xl p-6">
+            <div key={key.keyId} className="bg-card border border-card-border rounded-xl p-4 sm:p-6">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h3 className="font-semibold text-lg">{key.name || `Key ${key.keyId}`}</h3>
-                  <p className="text-sm text-muted font-mono">ID: {key.keyId}</p>
+                  <h3 className="font-semibold text-base sm:text-lg">{key.name || `Key ${key.keyId}`}</h3>
+                  <p className="text-xs sm:text-sm text-muted font-mono">ID: {key.keyId}</p>
                 </div>
                 {statusBadge(key.status)}
               </div>
 
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <HardDrive className="w-5 h-5 text-primary" />
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-4">
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                    <HardDrive className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                   </div>
-                  <div>
-                    <p className="text-xs text-muted">{t("dataUsed")}</p>
-                    <p className="font-semibold">{key.dataUsedGB} GB</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Activity className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted">{t("dataLimit")}</p>
-                    <p className="font-semibold">{key.dataLimitGB ? `${key.dataLimitGB} GB` : t("unlimited")}</p>
+                  <div className="min-w-0">
+                    <p className="text-[11px] sm:text-xs text-muted">{t("dataUsed")}</p>
+                    <p className="font-semibold text-sm sm:text-base">{key.dataUsedGB} GB</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Globe className="w-5 h-5 text-primary" />
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                    <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                   </div>
-                  <div>
-                    <p className="text-xs text-muted">{t("server")}</p>
-                    <p className="font-semibold">{key.serverName}</p>
+                  <div className="min-w-0">
+                    <p className="text-[11px] sm:text-xs text-muted">{t("dataLimit")}</p>
+                    <p className="font-semibold text-sm sm:text-base">{key.dataLimitGB ? `${key.dataLimitGB} GB` : t("unlimited")}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                    <Globe className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-[11px] sm:text-xs text-muted">{t("server")}</p>
+                    <p className="font-semibold text-sm sm:text-base truncate">{key.serverName}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center shrink-0 ${
                     key.daysLeft === 0 ? "bg-danger/10" : key.daysLeft <= 7 ? "bg-warning/10" : "bg-primary/10"
                   }`}>
-                    <CalendarClock className={`w-5 h-5 ${
+                    <CalendarClock className={`w-4 h-4 sm:w-5 sm:h-5 ${
                       key.daysLeft === 0 ? "text-danger" : key.daysLeft <= 7 ? "text-warning" : "text-primary"
                     }`} />
                   </div>
-                  <div>
-                    <p className="text-xs text-muted">{t("expires")}</p>
-                    <p className={`font-semibold ${
+                  <div className="min-w-0">
+                    <p className="text-[11px] sm:text-xs text-muted">{t("expires")}</p>
+                    <p className={`font-semibold text-sm sm:text-base ${
                       key.daysLeft === 0 ? "text-danger" : key.daysLeft <= 7 ? "text-warning" : ""
                     }`}>
                       {key.daysLeft === 0 ? t("expired") : `${key.daysLeft} ${t("daysLeft")}`}
@@ -164,9 +166,9 @@ export default function StatusPage() {
 
               {usageBar(key.dataUsedGB, key.dataLimitGB)}
 
-              <div className="flex items-center gap-2 mt-4 pt-4 border-t border-card-border">
-                <Clock className="w-4 h-4 text-muted" />
-                <span className="text-xs text-muted">
+              <div className="flex items-start gap-2 mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-card-border">
+                <Clock className="w-4 h-4 text-muted shrink-0 mt-0.5" />
+                <span className="text-[11px] sm:text-xs text-muted leading-relaxed">
                   {t("created")} {new Date(key.createdAt).toLocaleDateString()} &middot; {t("expires")} {new Date(key.expiresAt).toLocaleDateString()}
                 </span>
               </div>
