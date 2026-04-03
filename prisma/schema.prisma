@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  vpnKeys   VpnKey[]
+}
+
+model Server {
+  id        String   @id @default(cuid())
+  name      String
+  apiUrl    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  vpnKeys   VpnKey[]
+}
+
+model VpnKey {
+  id           String    @id @default(cuid())
+  keyId        String    @unique
+  outlineKeyId String
+  name         String?
+  accessUrl    String
+  status    KeyStatus @default(ACTIVE)
+  dataLimit BigInt?
+  expiresAt DateTime
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  serverId  String
+  server    Server    @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([keyId])
+  @@index([serverId])
+}
+
+enum KeyStatus {
+  ACTIVE
+  EXPIRED
+  REVOKED
+}

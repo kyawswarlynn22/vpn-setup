@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# VPN Key Management & Sales
 
-## Getting Started
+A web application for managing Outline VPN keys, built with Next.js, TypeScript, Tailwind CSS, and Prisma.
 
-First, run the development server:
+## Features
+
+- **Admin Dashboard** — Generate, view, rename, and delete Outline VPN keys. Copy `ss://` access URLs with one click.
+- **Public Status Page** — Users can check their data usage, data limit, and account status by entering their email or Key ID.
+- **Secure API** — All Outline API calls run server-side. The API secret is never exposed to the browser.
+
+## Tech Stack
+
+- **Next.js 16** (App Router)
+- **TypeScript**
+- **Tailwind CSS 4**
+- **Prisma 7** + PostgreSQL
+- **Outline VPN** (Shadowbox) API
+
+## Setup
+
+### 1. Install dependencies
+
+```bash
+npm install
+```
+
+### 2. Configure environment variables
+
+Copy `.env.example` to `.env` and fill in values:
+
+```bash
+cp .env.example .env
+```
+
+| Variable | Description |
+|---|---|
+| `DATABASE_URL` | PostgreSQL connection string |
+| `OUTLINE_API_URL` | Full Outline Management API URL (e.g. `https://1.2.3.4:8080/xxxx`) |
+| `ADMIN_PASSWORD` | Password for admin dashboard access |
+| `NODE_TLS_REJECT_UNAUTHORIZED` | Set to `0` to allow Outline's self-signed certs |
+
+### 3. Set up the database
+
+```bash
+npx prisma generate
+npx prisma db push
+```
+
+### 4. Run development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) for the status check page.
+Open [http://localhost:3000/admin](http://localhost:3000/admin) for the admin dashboard.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment (Vercel)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Push to GitHub.
+2. Import the repo in Vercel.
+3. Add environment variables in the Vercel dashboard.
+4. Vercel auto-detects Next.js and deploys.
 
-## Learn More
+All Outline API calls happen in route handlers, so the API secret stays on the server.
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/
+│   ├── page.tsx              # Public status check page
+│   ├── layout.tsx            # Root layout with navigation
+│   ├── globals.css           # Tailwind + custom theme
+│   ├── admin/
+│   │   ├── page.tsx          # Admin login gate
+│   │   └── dashboard.tsx     # Admin dashboard component
+│   └── api/
+│       ├── admin/keys/route.ts  # CRUD API for VPN keys (auth required)
+│       └── status/route.ts      # Public status check API
+├── lib/
+│   ├── outline.ts            # Outline VPN API client
+│   └── prisma.ts             # Prisma client singleton
+└── generated/prisma/         # Prisma generated client
+prisma/
+└── schema.prisma             # Database schema
+```
