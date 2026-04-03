@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Shield, Menu, X, Wifi, CreditCard, HelpCircle, MessageCircle } from "lucide-react";
+import { Shield, Languages, Menu, X, Wifi, CreditCard, HelpCircle, MessageCircle } from "lucide-react";
 import { I18nProvider, useI18n } from "@/lib/i18n";
 import { ReactNode, useState, useEffect } from "react";
 
 function Nav() {
-  const { t } = useI18n();
+  const { lang, setLang, t } = useI18n();
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
 
@@ -30,38 +30,54 @@ function Nav() {
   ];
 
   return (
-    <nav className="border-b border-card-border bg-card/80 backdrop-blur-md sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
-          <Shield className="w-6 h-6 text-primary" />
-          <span>{t("brand")}</span>
-        </Link>
+    <>
+      <nav className="border-b border-card-border bg-card/80 backdrop-blur-md sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
+            <Shield className="w-6 h-6 text-primary" />
+            <span>{t("brand")}</span>
+          </Link>
 
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-5">
-          {navLinks.map((link) => (
-            <Link key={link.href} href={link.href}
-              className={`text-sm transition-colors ${pathname === link.href ? "text-primary font-medium" : "text-muted hover:text-foreground"}`}>
-              {link.label}
-            </Link>
-          ))}
+          {/* Desktop nav */}
+          <div className="hidden md:flex items-center gap-5">
+            {navLinks.map((link) => (
+              <Link key={link.href} href={link.href}
+                className={`text-sm transition-colors ${pathname === link.href ? "text-primary font-medium" : "text-muted hover:text-foreground"}`}>
+                {link.label}
+              </Link>
+            ))}
+            <button
+              onClick={() => setLang(lang === "en" ? "mm" : "en")}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-card border border-card-border rounded-lg hover:bg-card-border transition-colors"
+            >
+              <Languages className="w-3.5 h-3.5" />
+              {lang === "en" ? "မြန်မာ" : "English"}
+            </button>
+          </div>
+
+          {/* Mobile: language + hamburger */}
+          <div className="flex md:hidden items-center gap-2">
+            <button
+              onClick={() => setLang(lang === "en" ? "mm" : "en")}
+              className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium bg-card border border-card-border rounded-lg"
+            >
+              <Languages className="w-3.5 h-3.5" />
+              {lang === "en" ? "MM" : "EN"}
+            </button>
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="p-2 rounded-lg hover:bg-card-border transition-colors"
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
+      </nav>
 
-        {/* Mobile: hamburger */}
-        <div className="flex md:hidden items-center gap-2">
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="p-2 rounded-lg hover:bg-card-border transition-colors"
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile menu overlay */}
+      {/* Mobile menu overlay - rendered outside nav */}
       {mobileOpen && (
-        <div className="md:hidden fixed inset-0 top-14 z-40 bg-background/95 backdrop-blur-sm">
+        <div className="md:hidden fixed inset-0 top-14 z-[60] bg-background">
           <div className="flex flex-col p-4 gap-1">
             {navLinks.map((link) => {
               const Icon = link.icon;
@@ -79,7 +95,7 @@ function Nav() {
           </div>
         </div>
       )}
-    </nav>
+    </>
   );
 }
 

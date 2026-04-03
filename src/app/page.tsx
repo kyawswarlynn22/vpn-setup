@@ -11,7 +11,11 @@ import {
   Loader2,
   Globe,
   CalendarClock,
+  CreditCard,
+  HelpCircle,
+  MessageCircle,
 } from "lucide-react";
+import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
 
 interface KeyStatus {
@@ -97,6 +101,31 @@ export default function StatusPage() {
           </button>
         </div>
       </form>
+
+      {/* Quick nav grid - visible on mobile */}
+      <div className="grid grid-cols-3 gap-3 mb-6 sm:mb-8 md:hidden">
+        <Link href="/pricing"
+          className="flex flex-col items-center gap-2 p-4 bg-card border border-card-border rounded-xl hover:border-primary/40 transition-colors">
+          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+            <CreditCard className="w-5 h-5 text-primary" />
+          </div>
+          <span className="text-xs font-medium text-muted">{t("pricing")}</span>
+        </Link>
+        <Link href="/faq"
+          className="flex flex-col items-center gap-2 p-4 bg-card border border-card-border rounded-xl hover:border-primary/40 transition-colors">
+          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+            <HelpCircle className="w-5 h-5 text-primary" />
+          </div>
+          <span className="text-xs font-medium text-muted">{t("faq")}</span>
+        </Link>
+        <Link href="/contact"
+          className="flex flex-col items-center gap-2 p-4 bg-card border border-card-border rounded-xl hover:border-primary/40 transition-colors">
+          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+            <MessageCircle className="w-5 h-5 text-primary" />
+          </div>
+          <span className="text-xs font-medium text-muted">{t("contactUs")}</span>
+        </Link>
+      </div>
 
       {error && (
         <div className="flex items-center gap-3 p-4 bg-danger/10 border border-danger/20 rounded-xl mb-6">
